@@ -1,0 +1,39 @@
+{
+  "enabled": {
+    "description": "启用插件",
+    "type": "bool",
+    "default": true
+  },
+  "api_base": {
+    "description": "TTS API 基础地址",
+    "type": "string",
+    "default": "https://api.xiaomimimo.com"
+  },
+  "api_key": {
+    "description": "API Key",
+    "type": "string",
+    "default": ""
+  },
+  "model": {
+    "description": "TTS 模型 ID",
+    "type": "string",
+    "default": "mimo-v2.5-tts-voicedesign"
+  },
+  "voice_desc": {
+    "description": "音色描述",
+    "type": "string",
+    "hint": "voicedesign 音色描述文本，决定说话人的声音",
+    "default": ""
+  },
+  "timeout": {
+    "description": "请求超时（秒）",
+    "type": "int",
+    "default": 60
+  },
+  "tool_cooldown": {
+    "description": "LLM 工具每人冷却（秒）",
+    "type": "int",
+    "hint": "0 = 不限",
+    "default": 60
+  }
+}

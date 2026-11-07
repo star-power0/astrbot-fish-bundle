@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.4.0] - 2026-11-07
+
+### Added
+- fish_voice v1.0.0 自研极简语音：`/语音` 命令 + `send_voice` 工具（LLM 在合适时机自主开口，如被要求听声音、道晚安、安慰），MiMo TTS voicedesign 音色驱动（音色描述走本机配置），wav→silk 复用 AstrBot 内置 pysilk 编码，NapCat 直发免 ffmpeg，仅私聊
+
 ## [1.3.0] - 2026-11-07
 
 ### Added

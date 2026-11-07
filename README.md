@@ -12,6 +12,7 @@
 | [`astrbot_plugin_history_cleaner`](plugins/astrbot_plugin_history_cleaner) | 1.0.0 | 启用 | 自研 | 三处 Markdown 清洗：发送端、`send()` 出口（覆盖流式分片）、存库端 |
 | [`astrbot_plugin_wake_window`](plugins/astrbot_plugin_wake_window) | 1.0.0 | 启用 | 自研 | 被 @ 后 N 秒内同群免 @，滑动续期，按群独立，命令可调时长 |
 | [`astrbot_plugin_fish_draw`](plugins/astrbot_plugin_fish_draw) | 1.0.0 | 启用 | 自研 | 极简生图：`/生图` 命令 + `generate_image` 工具（聊天中自主生图，LLM 先把意图翻译成画面描述），OpenAI Images 兼容 API，仅私聊 |
+| [`astrbot_plugin_fish_voice`](plugins/astrbot_plugin_fish_voice) | 1.0.0 | 启用 | 自研 | 极简语音：`/语音` 命令 + `send_voice` 工具（聊天中合适时机自主开口），MiMo TTS voicedesign 音色（描述走本机配置），仅私聊 |
 | [`astrbot_plugin_memora_connect`](deprecated/astrbot_plugin_memora_connect) | v0.5.4 | 已停用 | 第三方 [qa296](https://github.com/qa296/astrbot_plugin_memora_connect) | 长期记忆（知识图谱，无向量）。已被 LivingMemory 取代，代码留档 |
 | [`astrbot_plugin_qq_plaintext`](deprecated/astrbot_plugin_qq_plaintext) | 1.0.0 | 已停用 | 自研 | 初版 Markdown 清洗，只改发送端，已被 history_cleaner 取代 |
 | [`astrbot_plugin_markdown_killer`](deprecated/astrbot_plugin_markdown_killer) | 0.0.7 | 已停用 | 第三方 [AlanBacker](https://github.com/AlanBacker/astrbot_plugin_markdown_killer) | 社区 Markdown 清洗，覆盖不到存库端，已被 history_cleaner 取代 |

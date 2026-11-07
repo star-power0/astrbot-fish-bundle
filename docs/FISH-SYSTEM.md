@@ -23,7 +23,7 @@ AstrBot 4.29.4（fish 系统用户）
 
 ---
 
-## 二、插件总览（6 个启用中）
+## 二、插件总览（7 个启用中）
 
 | 插件 | 版本 | 作用 |
 |---|---|---|
@@ -32,6 +32,7 @@ AstrBot 4.29.4（fish 系统用户）
 | `astrbot_plugin_history_cleaner` | 1.0.0 | Markdown 三处清洗（发送+send 出口+存库） |
 | `astrbot_plugin_wake_window` | 1.0.0 | 群聊免 @ 时间窗（40 秒，命令仅群聊） |
 | `astrbot_plugin_fish_draw` | 1.0.0 | 极简生图（自研）：`/生图` + `generate_image` 工具，OpenAI Images 兼容接自建网关，仅私聊 |
+| `astrbot_plugin_fish_voice` | 1.0.0 | 极简语音（自研）：`/语音` + `send_voice` 工具，MiMo TTS voicedesign，silk 直发免 ffmpeg，仅私聊 |
 | `astrbot_plugin_global_rules` | 1.0.0 | 跨人格规则层，**支持人格豁免**（exclude_personas） |
 
 记忆：**LivingMemory 2.9.1**（插件市场装，不收录本仓库）——向量(bge-m3)+BM25 混合检索。
@@ -121,6 +122,12 @@ AstrBot 4.29.4（fish 系统用户）
 - 分组 142「少限制」在用；分组 140（luluai 上游）被 Cloudflare 1010 拦，不可用
 - 仅私聊；LLM 工具每人 60s 冷却
 - 曾用手办工坊 Pro（功能过重已删）；其原 key 116 绑的分组 140 不可用，已改绑 142
+
+### 4.6 语音（fish_voice，自研极简）
+
+- MiMo TTS voicedesign（`mimo-v2.5-tts-voicedesign`）：OpenAI Chat 兼容协议，`user` 消息 = 音色描述（本机配置，仓库不含），`assistant` 消息 = 要念的文本，返回 base64 wav
+- wav → Tencent silk：复用 AstrBot 内置 `wav_to_tencent_silk`（pysilk，自动重采样 24kHz 单声道），NapCat 免转码直发，**VPS 无需 ffmpeg**
+- `/语音 <话>` 命令（描述原文直传）+ `send_voice` 工具（LLM 判断合适时机自主开口：被要求发语音、道晚安、安慰等），60s 每人冷却，仅私聊
 
 ## 五、命令体系（三层模型，已固化）
 
