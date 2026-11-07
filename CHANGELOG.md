@@ -4,7 +4,7 @@
 
 ### Added
 - fish_voice v1.2.0：人格级音色映射（voice_map，不同人设不同声音；未映射人格不发语音防串声），群聊白名单（group_whitelist），工具冷却可配
-- fish_probe v1.0.0 心跳探针：定时向指定群发消息并自动撤回，供外部 watchdog 做消息管道假活检测（对抗「连接全绿但推送死透」的静默失联）
+- fish_probe v1.1.0 心跳探针：定时向管理号私聊发消息并自动撤回（群内无痕），供外部 watchdog 做消息管道假活检测（对抗「连接全绿但推送死透」的静默失联）
 
 ### Fixed
 - fish_draw / fish_voice 手动命令 `event.chain()` → `event.chain_result()`（前者方法不存在，手动命令一触即崩；此前未被发现是因为实测都走了 LLM 工具路径）
