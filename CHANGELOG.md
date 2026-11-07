@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.3.0] - 2026-11-07
+
+### Added
+- 手办工坊 Pro（shoubanhua v2.9.5）生图插件：OpenAI Images 兼容 API 接自建网关（gpt-image-2，分组 142），`#文生图` 等命令；群聊黑名单禁用，仅私聊
+- persona_state 亲密许可文案配置化（nsfw_mild_text / nsfw_explicit_text），真实文案走本机配置，仓库默认中性占位
+
+### Changed
+- memora_connect 移入 deprecated/（已被 LivingMemory 取代）；README 记忆行改指 LivingMemory 上游
+- FISH-SYSTEM.md 人设细节脱敏为抽象描述（配合开源）；插件总览补生图插件
+
+### Fixed
+- wake_prefix 被回写为 [] 导致群聊斜杠命令静默失效（WebUI 保存回写坑，重启日志有 wake_window WARN 可探测）
+- WebUI「嵌入」tab 不显示向量模型：provider 条目缺 provider_type 字段（前端 getProviderType 依赖它），补 "embedding"
+
 本项目遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 的格式。
 
 ## [1.2.1] - 2026-11-07
