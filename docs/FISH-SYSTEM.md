@@ -31,7 +31,7 @@ AstrBot 4.29.4（fish 系统用户）
 | `astrbot_plugin_dafatyu_meme` | 1.2.0 | 梗图 9210 张（梗鲸+8 社区包+ChineseBQB），`/梗图` + `send_meme` 工具，对外暴露 `pick_image()` 公共契约 |
 | `astrbot_plugin_history_cleaner` | 1.0.0 | Markdown 三处清洗（发送+send 出口+存库） |
 | `astrbot_plugin_wake_window` | 1.0.0 | 群聊免 @ 时间窗（40 秒，命令仅群聊） |
-| `astrbot_plugin_shoubanhua` | 2.9.5 | 生图（OpenAI Images 兼容，接自建网关 gpt-image-2）；`#文生图` 等命令；**群黑名单禁用，仅私聊** |
+| `astrbot_plugin_fish_draw` | 1.0.0 | 极简生图（自研）：`/生图` + `generate_image` 工具，OpenAI Images 兼容接自建网关，仅私聊 |
 | `astrbot_plugin_global_rules` | 1.0.0 | 跨人格规则层，**支持人格豁免**（exclude_personas） |
 
 记忆：**LivingMemory 2.9.1**（插件市场装，不收录本仓库）——向量(bge-m3)+BM25 混合检索。
@@ -114,12 +114,13 @@ AstrBot 4.29.4（fish 系统用户）
 
 ---
 
-### 4.5 生图（手办工坊 Pro）
+### 4.5 生图（fish_draw，自研极简）
 
-- 接口：`openai_image`（/v1/images/generations），base_url 指向自建网关，模型 `gpt-image-2`
+- `/生图 <描述>` 手动命令（描述原文直传，不过 LLM）；聊天中说「画一张/看看你」触发 `generate_image` 工具，**LLM 先把意图翻译成完整画面描述再调 API**（翻译规则写在工具 docstring）
+- OpenAI Images 兼容 API（/v1/images/generations），base_url 指向自建网关，模型 `gpt-image-2`
 - 分组 142「少限制」在用；分组 140（luluai 上游）被 Cloudflare 1010 拦，不可用
-- `group_blacklist` 禁了真人群 —— 生图仅私聊可用
-- 配置文件：`data/config/astrbot_plugin_shoubanhua_config.json`（插件自带体系，不走 AstrBot provider）
+- 仅私聊；LLM 工具每人 60s 冷却
+- 曾用手办工坊 Pro（功能过重已删）；其原 key 116 绑的分组 140 不可用，已改绑 142
 
 ## 五、命令体系（三层模型，已固化）
 
@@ -146,7 +147,7 @@ AstrBot 4.29.4（fish 系统用户）
 
 ### 5.3 当前命令
 
-私聊专属：`/伴侣状态`（emoji 面板）`/刷新日程` `/她的日记` `/设置生日` `/设置纪念日` `/主动开关` `/主动测试`；另有 `#` 前缀生图命令（手办工坊，如 `#文生图 <描述>`）
+私聊专属：`/伴侣状态`（emoji 面板）`/刷新日程` `/她的日记` `/设置生日` `/设置纪念日` `/主动开关` `/主动测试` `/生图 <描述>`
 群聊专属：`/时间窗` `/时间窗关闭`（40 秒）
 全场景：`/梗图`
 斜杠命令不进 LLM 历史、不进记忆缓冲、不占反思轮数（CommandFilter 拦截，不触发 LLM）。

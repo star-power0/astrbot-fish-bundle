@@ -1,0 +1,5 @@
+name: astrbot_plugin_fish_draw
+desc: 极简生图：/生图 命令 + generate_image 工具，OpenAI Images 兼容 API，仅私聊
+version: 1.0.0
+author: xiangguo
+repo: local

@@ -1,0 +1,46 @@
+{
+  "enabled": {
+    "description": "启用插件",
+    "type": "bool",
+    "default": true
+  },
+  "base_url": {
+    "description": "生图 API 基础地址",
+    "type": "string",
+    "hint": "只填域名，/v1/images/generations 自动拼接",
+    "default": "api.starroute.me"
+  },
+  "api_key": {
+    "description": "API Key",
+    "type": "string",
+    "hint": "绑生图分组的站内 key",
+    "default": ""
+  },
+  "model": {
+    "description": "生图模型 ID",
+    "type": "string",
+    "default": "gpt-image-2"
+  },
+  "size": {
+    "description": "出图尺寸",
+    "type": "string",
+    "default": "1024x1024"
+  },
+  "timeout": {
+    "description": "请求超时（秒）",
+    "type": "int",
+    "default": 120
+  },
+  "tool_cooldown": {
+    "description": "LLM 工具每人冷却（秒）",
+    "type": "int",
+    "hint": "0 = 不限",
+    "default": 60
+  },
+  "apply_personas": {
+    "description": "工具限定的人格白名单",
+    "type": "string",
+    "hint": "逗号分隔人格 ID；留空 = 所有私聊可用",
+    "default": ""
+  }
+}

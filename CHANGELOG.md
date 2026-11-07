@@ -3,7 +3,7 @@
 ## [1.3.0] - 2026-11-07
 
 ### Added
-- 手办工坊 Pro（shoubanhua v2.9.5）生图插件：OpenAI Images 兼容 API 接自建网关（gpt-image-2，分组 142），`#文生图` 等命令；群聊黑名单禁用，仅私聊
+- fish_draw v1.0.0 自研极简生图：`/生图` 命令 + `generate_image` 工具（聊天中自主生图，LLM 先翻译意图为画面描述），OpenAI Images 兼容 API 接自建网关（gpt-image-2，分组 142），仅私聊；替代曾短暂上线的第三方手办工坊 Pro（功能过重已删）
 - persona_state 亲密许可文案配置化（nsfw_mild_text / nsfw_explicit_text），真实文案走本机配置，仓库默认中性占位
 
 ### Changed
