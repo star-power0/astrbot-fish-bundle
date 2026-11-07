@@ -1,7 +1,14 @@
 {
-  "group_id": {
-    "description": "探针目标群号",
+  "target_type": {
+    "description": "探针目标类型",
     "type": "string",
+    "hint": "private = 私聊（推荐，无痕）；group = 群聊（消息会闪现）",
+    "default": "private"
+  },
+  "target_id": {
+    "description": "探针目标 ID",
+    "type": "string",
+    "hint": "私聊填对方 QQ 号，群聊填群号",
     "default": ""
   },
   "interval_min": {
@@ -12,7 +19,6 @@
   "recall_after_s": {
     "description": "撤回延迟（秒）",
     "type": "int",
-    "hint": "发出后几秒自动撤回，群友基本无感",
     "default": 4
   },
   "probe_text": {

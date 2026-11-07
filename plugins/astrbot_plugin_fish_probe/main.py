@@ -4,7 +4,8 @@ from astrbot.api import logger
 from astrbot.api.star import Context, Star, register
 
 DEFAULTS = {
-    "group_id": "",
+    "target_type": "private",   # private | group
+    "target_id": "",            # QQ number (private) or group id (group)
     "interval_min": 30,
     "recall_after_s": 4,
     "probe_text": "·",
@@ -15,8 +16,8 @@ DEFAULTS = {
 @register(
     "astrbot_plugin_fish_probe",
     "xiangguo",
-    "1.0.0",
-    "心跳探针：定时向指定群发送一条消息并自动撤回，供 qq-gate watchdog 做消息管道存活检测",
+    "1.1.0",
+    "心跳探针：定时向指定私聊/群发送一条消息并自动撤回，供 qq-gate watchdog 做消息管道存活检测",
 )
 class FishProbePlugin(Star):
     def __init__(self, context: Context, config=None):
@@ -26,8 +27,9 @@ class FishProbePlugin(Star):
             self.config.update(config)
         self._task = asyncio.create_task(self._loop())
         logger.info(
-            "[fish_probe] loaded | group=%s interval=%smin",
-            self.config.get("group_id"),
+            "[fish_probe] loaded | target=%s:%s interval=%smin",
+            self.config.get("target_type"),
+            self.config.get("target_id"),
             self.config.get("interval_min"),
         )
 
@@ -73,9 +75,12 @@ class FishProbePlugin(Star):
         if bot is None:
             logger.warning("[fish_probe] no aiocqhttp bot instance found")
             return
-        gid = int(self._cfg("group_id"))
+        tid = int(self._cfg("target_id"))
         self._mark()  # mark attempt time even if send fails
-        result = await bot.send_group_msg(group_id=gid, message=self._cfg("probe_text"))
+        if self._cfg("target_type") == "group":
+            result = await bot.send_group_msg(group_id=tid, message=self._cfg("probe_text"))
+        else:
+            result = await bot.send_private_msg(user_id=tid, message=self._cfg("probe_text"))
         msg_id = None
         if isinstance(result, dict):
             msg_id = result.get("message_id") or (result.get("data") or {}).get("message_id")
