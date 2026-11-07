@@ -1,5 +1,5 @@
 name: astrbot_plugin_fish_voice
 desc: 极简语音：/语音 命令 + send_voice 工具，MiMo TTS voicedesign 音色，仅私聊
-version: 1.0.0
+version: 1.2.0
 author: xiangguo
 repo: local

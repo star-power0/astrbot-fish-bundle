@@ -8,7 +8,7 @@
     "description": "生图 API 基础地址",
     "type": "string",
     "hint": "只填域名，/v1/images/generations 自动拼接",
-    "default": "api.starroute.me"
+    "default": ""
   },
   "api_key": {
     "description": "API Key",

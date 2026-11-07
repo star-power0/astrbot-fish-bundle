@@ -19,18 +19,21 @@ DEFAULTS = {
     "api_key": "",
     "model": "mimo-v2.5-tts-voicedesign",
     "voice_desc": "",
+    "voice_map": "{}",         # per-persona voice desc: {"人格名": "音色描述"}
+    "group_whitelist": "",     # comma-separated group ids allowed to use voice; empty = private only
     "timeout": 60,
     "tool_cooldown": 60,       # per-user LLM-tool cooldown, seconds
 }
 
-VOICE_USAGE = "用法：/语音 <要说的话>"
+VOICE_USAGE = "用法：/语音 <要说的话>（仅私聊或已开通的群）"
+GROUP_CLOSED = "这个群没开通语音。"
 
 
 @register(
     "astrbot_plugin_fish_voice",
     "xiangguo",
-    "1.0.0",
-    "极简语音：/语音 命令 + send_voice 工具，MiMo TTS voicedesign 音色，仅私聊",
+    "1.2.0",
+    "极简语音：/语音 命令 + send_voice 工具，MiMo TTS voicedesign，人格级音色映射，私聊+群白名单",
 )
 class FishVoicePlugin(Star):
     def __init__(self, context: Context, config=None):
@@ -40,21 +43,59 @@ class FishVoicePlugin(Star):
             self.config.update(config)
         self._last_tool_call: dict[str, float] = {}
         logger.info(
-            "[fish_voice] loaded | model=%s | voice_desc=%d chars | cooldown=%ss",
+            "[fish_voice] loaded | model=%s | voice_desc=%d chars | voice_map=%d personas | group_whitelist=%s | cooldown=%ss",
             self.config.get("model"),
             len(str(self.config.get("voice_desc") or "")),
+            len(self._voice_map()),
+            self._group_whitelist() or "(private only)",
             self.config.get("tool_cooldown"),
         )
 
     def _cfg(self, key: str):
         return self.config.get(key, DEFAULTS.get(key))
 
+    def _voice_map(self) -> dict:
+        """Parse persona->voice-desc mapping from config (JSON string)."""
+        raw = self.config.get("voice_map") or "{}"
+        try:
+            data = json.loads(raw) if isinstance(raw, str) else raw
+            return dict(data) if isinstance(data, dict) else {}
+        except Exception:  # noqa: BLE001
+            return {}
+
+    def _group_whitelist(self) -> list:
+        raw = str(self.config.get("group_whitelist") or "")
+        return [g.strip() for g in raw.split(",") if g.strip()]
+
+    def _allowed(self, event: AstrMessageEvent) -> bool:
+        """Private chat always allowed; group chat only for whitelisted groups."""
+        parts = str(event.unified_msg_origin).split(":")
+        if len(parts) >= 3 and parts[1] == "GroupMessage":
+            return parts[2] in self._group_whitelist()
+        return True
+
+    async def _voice_for(self, event: AstrMessageEvent) -> str:
+        """Pick voice desc for the current conversation's persona; fallback to default."""
+        try:
+            cm = self.context.conversation_manager
+            cid = await cm.get_curr_conversation_id(event.unified_msg_origin)
+            if cid:
+                conv = await cm.get_conversation(event.unified_msg_origin, cid)
+                pid = conv.persona_id if conv else None
+                if pid:
+                    desc = self._voice_map().get(pid)
+                    if desc:
+                        return str(desc)
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("[fish_voice] persona resolve failed: %s", exc)
+        return str(self._cfg("voice_desc") or "")
+
     def _data_dir(self) -> str:
         return os.path.join("data", "plugin_data", DATA_SUB)
 
-    async def _synthesize(self, text: str) -> str:
+    async def _synthesize(self, text: str, voice_desc: str) -> str:
         """Call MiMo TTS (voicedesign), convert wav to Tencent silk, return silk path."""
-        desc = str(self._cfg("voice_desc") or "").strip()
+        desc = str(voice_desc or "").strip()
         if not desc:
             raise RuntimeError("未配置音色描述")
         base = str(self._cfg("api_base") or "").rstrip("/")
@@ -100,34 +141,42 @@ class FishVoicePlugin(Star):
         )
         return silk_path
 
-    # ---------- manual command, private chat only ----------
+    # ---------- manual command ----------
 
-    @filter.event_message_type(filter.EventMessageType.PRIVATE_MESSAGE)
+    @filter.event_message_type(filter.EventMessageType.ALL)
     @filter.command("语音", alias={"说"})
     async def voice_command(self, event: AstrMessageEvent, text: str = ""):
         """/语音 <要说的话>"""
+        if not self._allowed(event):
+            yield event.plain_result(GROUP_CLOSED)
+            return
         if not text.strip():
             yield event.plain_result(VOICE_USAGE)
             return
         try:
-            path = await self._synthesize(text.strip())
+            path = await self._synthesize(text.strip(), await self._voice_for(event))
         except Exception as e:
             yield event.plain_result(f"失败：{e}")
             return
-        yield event.chain([Record.fromFileSystem(path)])
+        yield event.chain_result([Record.fromFileSystem(path)])
 
-    # ---------- LLM tool, private chat only ----------
+    # ---------- LLM tool ----------
 
-    @filter.event_message_type(filter.EventMessageType.PRIVATE_MESSAGE)
+    @filter.event_message_type(filter.EventMessageType.ALL)
     @filter.llm_tool(name="send_voice")
     async def send_voice(self, event: AstrMessageEvent, text: str = "") -> str:
-        """用一条语音消息把想说的话说出来。当对方想听你的声音——让你「发语音 / 念出来 / 说给我听」时必须调用；道晚安、哄人、安慰人这种特别适合用声音传达的时刻，也可以主动调用。平时普通聊天不要调用，一次回复最多调用一次。
+        """用一条语音消息把想说的话说出来。当对方想听你的声音——让你「发语音 / 念出来 / 说给我听」时必须调用；道晚安、哄人、安慰人这种特别适合用声音传达的时刻，也可以主动调用。在群聊里仅在对方明确要求你发语音时才调用，不要自主发。平时普通聊天不要调用，一次回复最多调用一次。
 
         Args:
             text(string): 语音里要说的话。根据当前对话情境用你自己的口吻自然生成，一两句话，口语化；不要包含 emoji、表情符号或括号里的动作描写
         """
+        if not self._allowed(event):
+            return "（这个群没开通语音，无法发送，自然带过即可）"
         if not text.strip():
             return "不知道该说什么，先不发了"
+        voice_desc = await self._voice_for(event)
+        if not voice_desc.strip():
+            return "（这个人还没配置声音，发不了语音，自然带过即可）"
         sender = str(event.get_sender_id())
         cooldown = int(self._cfg("tool_cooldown") or 0)
         if cooldown > 0:
@@ -135,7 +184,7 @@ class FishVoicePlugin(Star):
             if wait > 0:
                 return f"刚发过一条语音，歇 {int(wait)} 秒再说。"
         try:
-            path = await self._synthesize(text.strip())
+            path = await self._synthesize(text.strip(), voice_desc)
         except Exception as e:
             return f"语音生成失败：{e}"
         self._last_tool_call[sender] = time.time()

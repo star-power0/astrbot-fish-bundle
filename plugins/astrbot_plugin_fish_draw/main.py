@@ -14,7 +14,7 @@ from astrbot.core.message.message_event_result import MessageChain
 DATA_SUB = "astrbot_plugin_fish_draw"
 DEFAULTS = {
     "enabled": True,
-    "base_url": "api.starroute.me",
+    "base_url": "",
     "api_key": "",
     "model": "gpt-image-2",
     "size": "1024x1024",
@@ -120,7 +120,7 @@ class FishDrawPlugin(Star):
         except Exception as e:
             yield event.plain_result(f"失败：{e}")
             return
-        yield event.chain([self._image(path)])
+        yield event.chain_result([self._image(path)])
 
     # ---------- LLM tool, private chat only ----------
 

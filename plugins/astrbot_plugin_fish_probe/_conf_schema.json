@@ -1,0 +1,29 @@
+{
+  "group_id": {
+    "description": "探针目标群号",
+    "type": "string",
+    "default": ""
+  },
+  "interval_min": {
+    "description": "探针间隔（分钟）",
+    "type": "int",
+    "default": 30
+  },
+  "recall_after_s": {
+    "description": "撤回延迟（秒）",
+    "type": "int",
+    "hint": "发出后几秒自动撤回，群友基本无感",
+    "default": 4
+  },
+  "probe_text": {
+    "description": "探针消息内容",
+    "type": "string",
+    "default": "·"
+  },
+  "state_file": {
+    "description": "发送时间戳状态文件",
+    "type": "string",
+    "hint": "供 qq-gate watchdog 读取，保持默认即可",
+    "default": "/tmp/fish_probe_last"
+  }
+}

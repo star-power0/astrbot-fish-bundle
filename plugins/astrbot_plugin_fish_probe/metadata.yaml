@@ -1,0 +1,5 @@
+name: astrbot_plugin_fish_probe
+desc: 心跳探针：定时向指定群发消息并自动撤回，供 qq-gate watchdog 检测消息管道存活
+version: 1.0.0
+author: xiangguo
+repo: local

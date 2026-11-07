@@ -23,7 +23,7 @@ AstrBot 4.29.4（fish 系统用户）
 
 ---
 
-## 二、插件总览（7 个启用中）
+## 二、插件总览（8 个启用中）
 
 | 插件 | 版本 | 作用 |
 |---|---|---|
@@ -32,7 +32,8 @@ AstrBot 4.29.4（fish 系统用户）
 | `astrbot_plugin_history_cleaner` | 1.0.0 | Markdown 三处清洗（发送+send 出口+存库） |
 | `astrbot_plugin_wake_window` | 1.0.0 | 群聊免 @ 时间窗（40 秒，命令仅群聊） |
 | `astrbot_plugin_fish_draw` | 1.0.0 | 极简生图（自研）：`/生图` + `generate_image` 工具，OpenAI Images 兼容接自建网关，仅私聊 |
-| `astrbot_plugin_fish_voice` | 1.0.0 | 极简语音（自研）：`/语音` + `send_voice` 工具，MiMo TTS voicedesign，silk 直发免 ffmpeg，仅私聊 |
+| `astrbot_plugin_fish_voice` | 1.2.0 | 极简语音（自研）：`/语音` + `send_voice` 工具，MiMo TTS voicedesign，silk 直发免 ffmpeg；人格级音色映射，私聊+群白名单 |
+| `astrbot_plugin_fish_probe` | 1.0.0 | 心跳探针（自研）：定时向群发消息并自动撤回，供 qq-gate watchdog 检测消息管道假活 |
 | `astrbot_plugin_global_rules` | 1.0.0 | 跨人格规则层，**支持人格豁免**（exclude_personas） |
 
 记忆：**LivingMemory 2.9.1**（插件市场装，不收录本仓库）——向量(bge-m3)+BM25 混合检索。
@@ -123,11 +124,19 @@ AstrBot 4.29.4（fish 系统用户）
 - 仅私聊；LLM 工具每人 60s 冷却
 - 曾用手办工坊 Pro（功能过重已删）；其原 key 116 绑的分组 140 不可用，已改绑 142
 
-### 4.6 语音（fish_voice，自研极简）
+### 4.6 语音（fish_voice v1.2.0，自研极简）
 
-- MiMo TTS voicedesign（`mimo-v2.5-tts-voicedesign`）：OpenAI Chat 兼容协议，`user` 消息 = 音色描述（本机配置，仓库不含），`assistant` 消息 = 要念的文本，返回 base64 wav
+- MiMo TTS voicedesign（`mimo-v2.5-tts-voicedesign`）：OpenAI Chat 兼容协议，`user` 消息 = 音色描述，`assistant` 消息 = 要念的文本，返回 base64 wav
 - wav → Tencent silk：复用 AstrBot 内置 `wav_to_tencent_silk`（pysilk，自动重采样 24kHz 单声道），NapCat 免转码直发，**VPS 无需 ffmpeg**
-- `/语音 <话>` 命令（描述原文直传）+ `send_voice` 工具（LLM 判断合适时机自主开口：被要求发语音、道晚安、安慰等），60s 每人冷却，仅私聊
+- **人格级音色映射**（voice_map，JSON 配置）：按会话当前人格取专属音色描述；未映射人格不发语音（防止声音串人设）
+- `/语音 <话>` 命令 + `send_voice` 工具（LLM 判断合适时机自主开口），30s 每人冷却
+- 范围：私聊全部可用；群聊仅白名单群（group_whitelist 配置），工具在群里仅在对方明确要求时才发
+
+### 4.7 心跳探针（fish_probe，自研）
+
+- 每 30 分钟向指定群发一条极短消息并 4 秒后自动撤回（群友无感），发送时间戳写本地状态文件
+- 用途：给 qq-gate 的 watchdog 提供**消息管道端到端存活信号**——连接层全绿但消息推送死透的「假活」状态，任何端口/连接探活都发现不了，只有真实消息收发能证明管道活着
+- watchdog 侧判定：探针超时未被接收 → 自动重启 NapCat；重启无效（需扫码）→ 邮件告警；探针停发 → 告警 AstrBot 侧异常
 
 ## 五、命令体系（三层模型，已固化）
 

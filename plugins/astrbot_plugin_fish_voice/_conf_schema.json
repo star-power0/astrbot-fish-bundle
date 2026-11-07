@@ -20,9 +20,21 @@
     "default": "mimo-v2.5-tts-voicedesign"
   },
   "voice_desc": {
-    "description": "音色描述",
+    "description": "默认音色描述",
     "type": "string",
-    "hint": "voicedesign 音色描述文本，决定说话人的声音",
+    "hint": "人格没有专属音色时使用；留空 = 未配声人格不发语音",
+    "default": ""
+  },
+  "voice_map": {
+    "description": "人格专属音色映射",
+    "type": "string",
+    "hint": "JSON：{\"人格名\": \"音色描述\"}，如 {\"林娟\": \"十八到二十岁女大学生...\"}",
+    "default": "{}"
+  },
+  "group_whitelist": {
+    "description": "群聊语音白名单",
+    "type": "string",
+    "hint": "逗号分隔群号；留空 = 仅私聊可发语音",
     "default": ""
   },
   "timeout": {
