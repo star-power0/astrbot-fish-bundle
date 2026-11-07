@@ -1,0 +1,32 @@
+{
+  "enabled": {
+    "description": "启用全局规则",
+    "type": "bool",
+    "default": true,
+    "hint": "关闭后所有请求都不注入规则，人格按原样生效。"
+  },
+  "scope": {
+    "description": "生效范围",
+    "type": "string",
+    "default": "all",
+    "hint": "all = 所有会话；group = 仅群聊；private = 仅私聊。只想让群聊人格带规则时选 group。"
+  },
+  "rules": {
+    "description": "全局规则文本",
+    "type": "text",
+    "default": "",
+    "hint": "留空则使用内置默认规则。规则会追加在人设提示词之后，优先级高于人设中冲突的部分。"
+  },
+  "exclude_personas": {
+    "description": "豁免人格（逗号分隔）",
+    "type": "string",
+    "default": "",
+    "hint": "列在这里的人格完全不注入全局规则——沉浸式角色扮演人格（如私聊女友）会被「承认是AI/不编造」这类规则出戏，应加入此名单。"
+  },
+  "exclude_tools_for_default": {
+    "description": "default 人格禁用哪些工具",
+    "type": "string",
+    "default": "send_meme",
+    "hint": "逗号分隔的工具名。只对 default（通用兜底人格）生效。留空则 default 也能用全部工具。"
+  }
+}

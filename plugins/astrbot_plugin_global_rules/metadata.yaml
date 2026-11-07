@@ -1,0 +1,5 @@
+name: "astrbot_plugin_global_rules"
+plugin_name: "astrbot_plugin_global_rules"
+author: "xiangguo"
+version: "1.0.0"
+desc: "全局规则层：把跨人格通用的行为准则（工具纪律、话题边界、表达诚实）注入每次请求，弥补 AstrBot 单层人格模型的空缺"

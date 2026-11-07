@@ -1,0 +1,5 @@
+name: "astrbot_plugin_history_cleaner"
+plugin_name: "astrbot_plugin_history_cleaner"
+author: "xiangguo"
+version: "1.0.0"
+desc: "同步清洗对话历史里的 Markdown：LLM 输出发出去是干净的，存进历史也必须干净，否则模型照着旧格式一直学"

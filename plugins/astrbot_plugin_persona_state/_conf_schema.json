@@ -1,0 +1,137 @@
+{
+  "enabled": {
+    "description": "启用私聊状态注入",
+    "type": "bool",
+    "default": true,
+    "hint": "关闭后私聊不注入状态，后台生活（节目单/日记/主动）全部停止。"
+  },
+  "inject_chars": {
+    "description": "状态段最大字符数",
+    "type": "int",
+    "default": 240,
+    "hint": "注入的系统提示上限，超长截断。"
+  },
+  "wake_hour": {
+    "description": "她几点起床",
+    "type": "int",
+    "default": 8,
+    "hint": "北京时间。起床后 1 小时内是迷糊状态；凌晨被吵醒会积累睡眠债、带起床气。"
+  },
+  "sleep_hour": {
+    "description": "她几点睡觉",
+    "type": "int",
+    "default": 23,
+    "hint": "北京时间。22-23 点犯困，23 点后睡着。"
+  },
+  "persona_brief": {
+    "description": "角色一句话简介（供节目单/日记/主动消息参考）",
+    "type": "string",
+    "default": "",
+    "hint": "例：大学生，喜欢猫和奶茶，说话软。留空则用通用描述。详细人设在 AstrBot 人格里配。"
+  },
+  "user_name": {
+    "description": "她对用户的称呼",
+    "type": "string",
+    "default": "你",
+    "hint": "用于日记和主动消息的提示词。"
+  },
+  "user_birthday": {
+    "description": "用户生日（MM-DD）",
+    "type": "string",
+    "default": "",
+    "hint": "当天会注入「今天是用户的生日」。"
+  },
+  "anniversary_date": {
+    "description": "在一起的日子（YYYY-MM-DD）",
+    "type": "string",
+    "default": "",
+    "hint": "之后每天注入「在一起第 N 天」。"
+  },
+  "bond_init": {
+    "description": "初始好感值（0-100）",
+    "type": "int",
+    "default": 85,
+    "hint": "匹配「两个人已经在一起」的人设：85=恋人档，55=亲密档，30=熟络档，20=从陌生人开始养成。对已有会话一次性生效（只升不降）。"
+  },
+  "apply_personas": {
+    "description": "只对这些人格生效（逗号分隔）",
+    "type": "string",
+    "default": "",
+    "hint": "空 = 所有私聊都启用状态系统。填人格名（如「林娟」）后，其他人格的私聊（如别人找 bot 聊天）完全不受影响——不注入、不积累好感、无主动消息。"
+  },
+  "sticker_enabled": {
+    "description": "主动消息附带表情包",
+    "type": "bool",
+    "default": true,
+    "hint": "通过梗图插件的公共接口选图；关闭或梗图插件不存在时自动退化为纯文本，互不影响。"
+  },
+  "nsfw_mode": {
+    "description": "亲密内容档位",
+    "type": "string",
+    "options": [
+      "off",
+      "mild",
+      "explicit"
+    ],
+    "default": "off",
+    "hint": "常驻人格级许可（不分时段），分 mild/explicit 两级；实际注入文本由 nsfw_mild_text / nsfw_explicit_text 配置。"
+  },
+  "nsfw_prompt": {
+    "description": "亲密偏好自定义文本（explicit 时注入）",
+    "type": "text",
+    "default": "",
+    "hint": "你自己填的偏好/设定，原样追加在许可行后面。留空则只用内置许可行。"
+  },
+    "nsfw_mild_text": {
+        "description": "mild 档注入的许可文本",
+        "type": "string",
+        "hint": "留空使用内置占位文本；真实文案请在本机配置中填写",
+        "default": ""
+    },
+    "nsfw_explicit_text": {
+        "description": "explicit 档注入的许可文本",
+        "type": "string",
+        "hint": "留空使用内置占位文本；真实文案请在本机配置中填写",
+        "default": ""
+    },
+
+  "proactive_enabled": {
+    "description": "允许她主动发消息",
+    "type": "bool",
+    "default": true,
+    "hint": "候选：久未联系/节目单想分享/话头没接完/深夜提醒；受免打扰与频控约束。"
+  },
+  "proactive_daily_cap": {
+    "description": "主动消息每日上限",
+    "type": "int",
+    "default": 3,
+    "hint": "按北京时间计天。"
+  },
+  "proactive_min_interval_min": {
+    "description": "两条主动消息最小间隔（分钟）",
+    "type": "int",
+    "default": 120
+  },
+  "quiet_start": {
+    "description": "免打扰开始（HH:MM）",
+    "type": "string",
+    "default": "01:00"
+  },
+  "quiet_end": {
+    "description": "免打扰结束（HH:MM）",
+    "type": "string",
+    "default": "08:00"
+  },
+  "task_provider_id": {
+    "description": "后台任务模型 Provider ID",
+    "type": "string",
+    "default": "",
+    "hint": "节目单/日记/主动消息用它。留空跟随当前会话的对话模型。"
+  },
+  "daily_task_token_limit": {
+    "description": "插件后台任务每日 token 软限额",
+    "type": "int",
+    "default": 200000,
+    "hint": "超出后当天不再生成节目单/日记/主动消息（估算法：字符数/4）。"
+  }
+}

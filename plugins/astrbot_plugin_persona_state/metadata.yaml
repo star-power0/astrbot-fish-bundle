@@ -1,0 +1,5 @@
+name: "astrbot_plugin_persona_state"
+plugin_name: "astrbot_plugin_persona_state"
+author: "xiangguo"
+version: "2.0.0"
+desc: "私聊伴侣状态+生活：心情/精力/睡眠/节目单/日记梦境/好感纪念日/主动消息/亲密常驻许可，0 token 打分，只对私聊生效"

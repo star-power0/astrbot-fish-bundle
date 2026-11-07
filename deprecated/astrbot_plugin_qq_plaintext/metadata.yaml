@@ -1,0 +1,5 @@
+name: "astrbot_plugin_qq_plaintext"
+plugin_name: "astrbot_plugin_qq_plaintext"
+author: "xiangguo"
+version: "1.0.0"
+desc: "把 LLM 回复里的 Markdown 剥成 QQ 能看的纯文本：去掉加粗、反引号、代码围栏、标题、列表符号、表格竖线"

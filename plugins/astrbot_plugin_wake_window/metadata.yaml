@@ -1,0 +1,5 @@
+name: "astrbot_plugin_wake_window"
+plugin_name: "astrbot_plugin_wake_window"
+author: "xiangguo"
+version: "1.0.0"
+desc: "群聊免@时间窗：被@后一段时间内（默认30秒）继续说话不用再@，超时自动收回。时间窗可配，支持按群独立计数。"

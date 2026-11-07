@@ -1,0 +1,106 @@
+{
+  "enable_memory_system": {
+    "description": "启用印象系统",
+    "type": "bool",
+    "hint": "是否启用印象记忆系统，关闭后将停止所有记忆相关的功能",
+    "default": true,
+    "obvious_hint": true
+  },
+  "enable_group_isolation": {
+    "description": "启用群聊隔离",
+    "type": "bool",
+    "hint": "是否启用群聊记忆隔离，防止不同群之间的记忆互相泄露",
+    "default": true
+  },
+  "recall_mode": {
+    "description": "主要工作模式",
+    "type": "string",
+    "hint": "选择主要的工作模式，simple：最方便，无需配置，效果最差, llm：允许使用llm工作, embedding：embedding和llm配合工作",
+    "options": ["simple", "llm", "embedding"],
+    "default": "simple"
+  },
+  "enable_associative_recall": {
+    "description": "启用联想回忆",
+    "type": "bool",
+    "hint": "是否在llm和embedding模式下启用基于知识图谱的联想回忆功能，会智能补充相关记忆",
+    "default": true
+  },
+  "llm_provider": {
+    "description": "LLM服务提供商",
+    "type": "string",
+    "hint": "选择用于记忆形成的LLM服务提供商，将使用AstrBot配置的对应提供商",
+    "default": "openai"
+  },
+  "embedding_provider": {
+    "description": "嵌入模型服务提供商",
+    "type": "string",
+    "hint": "选择嵌入模型的服务提供商，将使用AstrBot配置的对应提供商",
+    "default": "openai"
+  },
+  "forget_threshold_days": {
+    "description": "遗忘阈值天数",
+    "type": "int",
+    "hint": "多少天后开始遗忘不活跃的记忆",
+    "default": 30
+  },
+  "consolidation_interval_hours": {
+    "description": "记忆整理间隔小时",
+    "type": "int",
+    "hint": "多久进行一次记忆整理和合并",
+    "default": 24
+  },
+  "max_injected_memories": {
+    "description": "最大注入记忆数",
+    "type": "int",
+    "hint": "每次对话中最多注入多少条相关记忆到LLM上下文",
+    "default": 5
+  },
+  "enable_enhanced_memory": {
+    "description": "启用增强记忆功能",
+    "type": "bool",
+    "hint": "是否启用增强记忆功能，包括增强召回和自动注入相关记忆到LLM上下文",
+    "default": true
+  },
+  "memory_injection_threshold": {
+    "description": "记忆注入阈值",
+    "type": "float",
+    "hint": "记忆相关性阈值，低于此值的记忆不会被注入(0-1)",
+    "default": 0.3
+  },
+  "conversation_history_count": {
+    "description": "对话历史条数",
+    "type": "int",
+    "hint": "获取对话历史时的最大条数，影响记忆提取的上下文范围",
+    "default": 24
+  },
+  "topic_message_threshold": {
+    "description": "话题分析消息阈值",
+    "type": "int",
+    "hint": "积累到此数量的消息后触发话题分析",
+    "default": 20
+  },
+  "recent_completed_sessions_count": {
+    "description": "保留的已完成会话数量",
+    "type": "int",
+    "hint": "用于构建LLM上下文的最近已完成会话摘要数量",
+    "default": 5
+  },
+  "enable_persona_injection_in_memory_generation": {
+    "description": "启用记忆生成人格注入",
+    "type": "bool",
+    "hint": "是否在话题分析/记忆生成阶段注入当前会话人格设定",
+    "default": true
+  },
+  "max_session_rounds": {
+    "description": "会话强制总结轮次",
+    "type": "int",
+    "hint": "会话经历多少轮分析后强制完成（防止模型一直标ongoing不总结），0=不限制",
+    "default": 5
+  },
+  "exclude_keywords": {
+    "description": "排除关键词列表",
+    "type": "list",
+    "hint": "如果消息以这些关键词开头，将被记忆系统忽略",
+    "default": []
+  }
+}

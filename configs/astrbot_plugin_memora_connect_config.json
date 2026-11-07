@@ -1,0 +1,19 @@
+{
+  "enable_memory_system": true,
+  "enable_group_isolation": true,
+  "recall_mode": "simple",
+  "enable_associative_recall": true,
+  "llm_provider": "",
+  "embedding_provider": "",
+  "forget_threshold_days": 90,
+  "consolidation_interval_hours": 24,
+  "max_injected_memories": 5,
+  "enable_enhanced_memory": true,
+  "memory_injection_threshold": 0.3,
+  "conversation_history_count": 24,
+  "topic_message_threshold": 20,
+  "recent_completed_sessions_count": 5,
+  "enable_persona_injection_in_memory_generation": true,
+  "max_session_rounds": 5,
+  "exclude_keywords": []
+}

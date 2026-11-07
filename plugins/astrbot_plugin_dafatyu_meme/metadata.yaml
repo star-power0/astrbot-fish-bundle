@@ -1,0 +1,5 @@
+name: "astrbot_plugin_dafatyu_meme"
+plugin_name: "astrbot_plugin_dafatyu_meme"
+author: "xiangguo"
+version: "1.2.0"
+desc: "大肥鱼梗图：梗鲸 12 分类 2956 张 + 8 个社区表情包 1508 张 + ChineseBQB 4746 张，共 9210 张。支持 /梗图 命令与 send_meme 工具，可发图片或表情样式"
